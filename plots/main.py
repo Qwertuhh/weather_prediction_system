@@ -6,10 +6,11 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QIcon
 from styles.style_sheet import light_stylesheet, dark_stylesheet  # Import styles
 from plots.components.graphs.heatmap import load_map  # Import load_map function from plotting
-from wind_data import WindDataVisualizer  # Import the WindDataVisualizer
+from plots.components.graphs.windmap import WindDataVisualizer  # Import the WindDataVisualizer
 
 class WeatherMapApp(QMainWindow):
     def __init__(self):
+        
         super().__init__()
         self.setWindowTitle('Weather Map Application')
         self.setGeometry(100, 100, 1200, 800)
