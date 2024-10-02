@@ -5,6 +5,7 @@ import json
 
 def load_map(folium_map, geojson_file=None):
     """Generate and display the map with optional GeoJSON overlay and tooltips/popups."""
+    # Initialize the map at the desired coordinates
     m = folium.Map(location=[26.917341, 75.850471], zoom_start=12)
 
     if geojson_file:
@@ -18,20 +19,30 @@ def load_map(folium_map, geojson_file=None):
                 'fillOpacity': 0.4
             }
 
-        folium.GeoJson(
-            geojson_path,
-            name="geojson",
-            style_function=style_function,
-            tooltip=folium.GeoJsonTooltip(
-                fields=list(get_geojson_properties(geojson_path).keys()),
-                aliases=list(get_geojson_properties(geojson_path).keys())
-            ),
-            popup=folium.GeoJsonPopup(fields=list(get_geojson_properties(geojson_path).keys()))
-        ).add_to(m)
+        try:
+            # Load GeoJSON and add to the map
+            folium.GeoJson(
+                geojson_path,
+                name="geojson",
+                style_function=style_function,
+                tooltip=folium.GeoJsonTooltip(
+                    fields=list(get_geojson_properties(geojson_path).keys()),
+                    aliases=list(get_geojson_properties(geojson_path).keys()),
+                    localize=True
+                ),
+                popup=folium.GeoJsonPopup(
+                    fields=list(get_geojson_properties(geojson_path).keys()),
+                    labels=True
+                )
+            ).add_to(m)
+        except Exception as e:
+            print(f"Error loading GeoJSON file: {e}")
 
     add_heatmap(m)
 
-    m.save(folium_map)
+    # Save the generated map
+    folium_map_path = f"{folium_map}"
+    m.save(folium_map_path)
     return m
 
 def add_heatmap(folium_map):
@@ -103,7 +114,6 @@ def add_heatmap(folium_map):
     # Add heatmap layer for LADC and HADC
     if locations:
         HeatMap(locations, overlay=True, name='Heat Map', z_index=10).add_to(folium_map)
-
 
 def get_geojson_properties(geojson_path):
     """Read the GeoJSON file and return its properties for tooltips/popups."""

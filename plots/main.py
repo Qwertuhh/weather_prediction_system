@@ -1,16 +1,18 @@
 import os
 import sys
+import pandas as pd
+import folium
 from PyQt5.QtWidgets import QApplication, QMainWindow, QComboBox, QVBoxLayout, QWidget, QPushButton
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QIcon
-from styles.style_sheet import light_stylesheet, dark_stylesheet  # Import styles
-from plots.components.graphs.heatmap import load_map  # Import load_map function from plotting
-from plots.components.graphs.windmap import WindDataVisualizer  # Import the WindDataVisualizer
-
+from folium.plugins import HeatMap
+from styles.style_sheet import light_stylesheet, dark_stylesheet
+from components.graphs.heatmap import load_map
+from components.graphs.windmap import WindDataVisualizer
+from components.graphs.geoJSON_map import load_map
 class WeatherMapApp(QMainWindow):
     def __init__(self):
-        
         super().__init__()
         self.setWindowTitle('Weather Map Application')
         self.setGeometry(100, 100, 1200, 800)
@@ -31,7 +33,7 @@ class WeatherMapApp(QMainWindow):
         self.geojson_dropdown = QComboBox(self)
         self.layout.addWidget(self.geojson_dropdown)
 
-        self.folium_map = "plots/components/html/folium.html"
+        self.folium_map_path = "plots/components/html/folium.html"
         self.load_geojson_files()
 
         self.geojson_dropdown.currentIndexChanged.connect(self.update_map_with_geojson)
@@ -42,6 +44,12 @@ class WeatherMapApp(QMainWindow):
         self.toggle_button = QPushButton("Toggle Dark Mode", self)
         self.toggle_button.clicked.connect(self.toggle_mode)
         self.layout.addWidget(self.toggle_button)
+
+        # Initialize WindDataVisualizer
+        self.ladc_file = 'data/raw/LADC/__locations__.csv'
+        self.hadc_file = 'data/raw/HADC/Location_1.csv'
+        self.wind_visualizer = WindDataVisualizer(self.ladc_file, self.hadc_file)
+        self.geojson_dir = 'data/maps/jaipur'
 
         # Load initial map with default GeoJSON
         self.load_map("Jaipur_Zones")
@@ -56,9 +64,8 @@ class WeatherMapApp(QMainWindow):
 
     def load_geojson_files(self):
         """Load GeoJSON files from the data/maps/geoJSON directory."""
-        geojson_dir = 'data/maps/jaipur'
         added_files = set()
-        for file_name in os.listdir(geojson_dir):
+        for file_name in os.listdir('data/maps/jaipur'):
             if file_name.endswith('.geojson'):
                 base_name = file_name[:-8]
                 if base_name not in added_files:
@@ -67,8 +74,31 @@ class WeatherMapApp(QMainWindow):
 
     def load_map(self, geojson_file=None):
         """Load the Folium map and display it in the QWebEngineView."""
-        folium_map = load_map(self.folium_map, geojson_file)
-        self.map_view.setUrl(QUrl.fromLocalFile(os.path.abspath(self.folium_map)))
+        folium_map = load_map(self.folium_map_path, geojson_file)
+
+        # Load HADC data for heatmap visualization
+        self.load_hadc_heatmap(folium_map)
+
+        # Save the updated map
+        folium_map.save(self.folium_map_path)
+        self.map_view.setUrl(QUrl.fromLocalFile(os.path.abspath(self.folium_map_path)))
+
+        # Call load_map() with the desired GeoJSON file name
+        load_map(self.folium_map_path, geojson_file="data/maps/jaipur/jaipur_Zones.geojson")
+
+        # Add wind arrows and markers to the Folium map after it is loaded
+        #? Using compound method to plot
+        self.wind_visualizer.add_wind_arrows_and_markers()
+
+    def load_hadc_heatmap(self, folium_map):
+        """Load HADC data and plot it as a heatmap."""
+        try:
+            hadc_data = self.wind_visualizer.load_hadc_data()
+            if hadc_data is not None:
+                heatmap_data = [(row['Latitude'], row['Longitude']) for _, row in hadc_data.iterrows() if 'Latitude' in row and 'Longitude' in row]
+                HeatMap(heatmap_data).add_to(folium_map)
+        except Exception as e:
+            print(f"Error loading HADC data for heatmap: {e}")
 
     def update_map_with_geojson(self):
         """Update the map when the selected GeoJSON file changes."""
