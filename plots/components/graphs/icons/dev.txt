@@ -1,0 +1,11 @@
+icons/
+  ├── x.svg                  # Close icon
+  ├── chevron-down.svg       # Dropdown arrow
+  ├── sun.svg               # Light theme
+  ├── moon.svg              # Dark theme
+  ├── refresh.svg           # Real-time refresh
+  ├── stop.svg              # Stop real-time
+  ├── file.svg              # Default file icon
+  ├── folder.svg            # Folder icon
+  ├── chart.svg             # Chart icon
+  └── settings.svg          # Settings icon

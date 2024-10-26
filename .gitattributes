@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+plots/dist/main.exe filter=lfs diff=lfs merge=lfs -text
+plots/build/main/main.pkg filter=lfs diff=lfs merge=lfs -text

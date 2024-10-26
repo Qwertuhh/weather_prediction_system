@@ -1,7 +1,5 @@
 \venv
 \run_app.sh
-\plots\dist
-\plots\build
 \plots\main.spec
 \dev
 \.vscode

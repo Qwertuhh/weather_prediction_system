@@ -1,0 +1,6 @@
+2024-10-26 17:08:41,283 - __main__ - CRITICAL - Application failed to start: name 'apply_theme' is not defined
+2024-10-26 17:12:20,690 - __main__ - CRITICAL - Application failed to start: 'tab_bg'
+2024-10-26 17:13:05,125 - __main__ - CRITICAL - Application failed to start: 'tab_bg'
+2024-10-26 17:28:49,568 - __main__ - INFO - Created sample data in data\hadc
+2024-10-26 17:28:49,580 - __main__ - INFO - Created sample data in data\ladc
+2024-10-26 17:28:49,585 - __main__ - ERROR - Error opening tab: Invalid RGBA argument: 'transparent'
