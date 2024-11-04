@@ -383,7 +383,7 @@ class MainWindow(QMainWindow):
         if self.realtime_active:
             self.timer = QTimer()
             self.timer.timeout.connect(self.update_plot)
-            self.timer.start(5000)  # Update every 5 seconds
+            self.timer.start(900)  # Update every 0.9 seconds
             self.realtime_button.setText("Stop Real-time")
             self.realtime_button.setStyleSheet("""
                 QPushButton {

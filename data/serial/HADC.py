@@ -5,7 +5,7 @@ import csv
 
 # Function to create a directory for storing the data file
 def create_directory():
-    top_dir = os.path.join(os.getcwd(), "data/raw/Test")
+    top_dir = os.path.join(os.getcwd(), "data/raw/HADC")
     if not os.path.exists(top_dir):
         os.makedirs(top_dir)
     return top_dir
@@ -17,7 +17,7 @@ def save_data_to_csv(data, file_path):
         writer.writerow(data)
 
 # Serial port configuration
-port = 'COM6'
+port = 'COM8'
 baud_rate = 4800
 timeout = 1
 
@@ -28,7 +28,7 @@ longitude = 75.85001155326638
 
 # Setup the directory and CSV file
 directory = create_directory()
-file_path = os.path.join(directory, "location_1.csv")
+file_path = os.path.join(directory, "location_2.csv")
 
 # Setup serial connection
 ser = serial.Serial(port, baud_rate, timeout=timeout)
