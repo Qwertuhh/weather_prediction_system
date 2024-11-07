@@ -9,9 +9,8 @@ This project aims to solve a real-world problem of inaccurate and localized weat
 This repository contains both the **app** and **hardware code** required to set up and operate the weather prediction system.
 
 > [!NOTE]
-> This is a **school project** undertaken by students to explore how modern technologies can improve weather prediction systems.
->
-> for [more](docs\main.pdf)
+> This is a **school project** undertaken by students to explore how modern technologies can improve weather prediction systems.  
+> For more details, check the [documentation](docs/main.pdf).
 
 ## High Altitude Data Collectors (HADCs)
 
@@ -23,9 +22,8 @@ However, there are certain challenges with this method:
 
 To address this issue, we propose the introduction of a **parachute system**, which allows the devices to descend safely and be reused in future missions. This improves the reliability and cost-effectiveness of weather data collection.
 
-> [!IMPORTANT]
->
-> **We require the hardware (HADCs and LADCs) for collecting data** to fully utilize the potential of this weather prediction system. Without the physical sensors and data collectors, the system cannot function or provide accurate data
+> [!IMPORTANT]  
+> **We require the hardware (HADCs and LADCs) for collecting data** to fully utilize the potential of this weather prediction system. Without the physical sensors and data collectors, the system cannot function or provide accurate data.
 
 ## Devices Used
 
@@ -62,4 +60,4 @@ If you'd like to contribute to this project, feel free to open a pull request or
 
 ## License
 
-This project is licensed under the **GPL-3.0** License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **GPL-3.0** License. See the [LICENSE](LICENSE) file for details.
